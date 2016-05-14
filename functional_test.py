@@ -39,7 +39,7 @@ class NewVisitorTest(unittest.TestCase):
 		#Hitting enter, should update the page and page lists
 		#"buy something as to-do item"
 		inputbox.send_keys(Keys.ENTER)
-		self.check_for_row_in_list_table('Buy something')
+		self.check_for_row_in_list_table('1: Buy something')
 
 		#Blackbox shows and invites to add another item.
 		#Enter "buy another item"
@@ -48,9 +48,8 @@ class NewVisitorTest(unittest.TestCase):
 		inputbox.send_keys(Keys.ENTER)
 
 		#Page should update again and both items show on list
-		self.check_for_row_in_list_table('Buy something')
-		self.check_for_row_in_list_table('buy another item')
-
+		self.check_for_row_in_list_table('1: Buy something')
+		self.check_for_row_in_list_table('2: buy another item')
 
 		#Check if unique URL was created to store list
 		self.fail('Finish the test')
