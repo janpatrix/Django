@@ -1,8 +1,8 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 	
 	def setUp(self):
 		self.browser = webdriver.Firefox()
@@ -18,9 +18,8 @@ class NewVisitorTest(unittest.TestCase):
 
 
 	def test_create_list_and_retrieve_it_later(self):
-
 		#Open Homepage
-		self.browser.get('http://localhost:8000')
+		self.browser.get(self.live_server_url)
 
 		#Check page title for Django
 		self.assertIn ('To-Do', self.browser.title)
@@ -54,6 +53,3 @@ class NewVisitorTest(unittest.TestCase):
 		#Check if unique URL was created to store list
 		self.fail('Finish the test')
 		#Visit unique URL and check if items are still there
-
-if __name__ == '__main__':
-	unittest.main()
