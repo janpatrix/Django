@@ -36,19 +36,24 @@ class NewVisitorTest(unittest.TestCase):
 
 		table = self.browser.find_element_by_id('id_list_table')
 		rows = table.find_elements_by_tag_name('tr')
-		self.assertTrue(
-				any(row.text == '1: Buy something' for row in rows),
-				"New to-do item did not appear in table"
-			)
+		self.assertIn('1: Buy something', [row.text for row in rows])
 
 		#Blackbox shows and invites to add another item.
 		#Enter "buy another item"
-		self.fail('Finish the test')
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox.send_keys('buy another item')
+		inputbox.send_keys(Keys.ENTER)
 
+		import time
+		time.sleep(10)
 		#Page should update again and both items show on list
+		table = self.browser.find_element_by_id('id_list_table')
+		rows = table.find_elements_by_tag_name('tr')
+		self.assertIn('1: Buy something', [row.text for row in rows])
+		self.assertIn('2: buy another', [row.text for row in rows])
 
 		#Check if unique URL was created to store list
-
+		self.fail('Finish the test')
 		#Visit unique URL and check if items are still there
 
 if __name__ == '__main__':
