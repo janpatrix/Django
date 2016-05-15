@@ -29,7 +29,7 @@ class NewVisitorTest(LiveServerTestCase):
 		#Create a to do item
 		inputbox = self.browser.find_element_by_id('id_new_item')
 		self.assertEqual(inputbox.get_attribute('placeholder'),
-			'Start a to-do item'
+			'Enter a to-do item'
 			)
 
 		#Type "buy something" into the text-box
