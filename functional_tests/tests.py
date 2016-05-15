@@ -38,6 +38,8 @@ class NewVisitorTest(LiveServerTestCase):
 		#Hitting enter, should update the page and page lists
 		#"buy something as to-do item"
 		inputbox.send_keys(Keys.ENTER)
+		my_list_url = self.browser.current_url
+		self.assertRegex(my_list_url, 'lists/.+')
 		self.check_for_row_in_list_table('1: Buy something')
 
 		#Blackbox shows and invites to add another item.
@@ -50,6 +52,30 @@ class NewVisitorTest(LiveServerTestCase):
 		self.check_for_row_in_list_table('1: Buy something')
 		self.check_for_row_in_list_table('2: buy another item')
 
-		#Check if unique URL was created to store list
-		self.fail('Finish the test')
-		#Visit unique URL and check if items are still there
+		#A new User is using the site - Patrick
+
+		## We need a new browser session to make sure no information
+		## is shown from lasts session
+		self.browser.quit()
+		self.browser = webdriver.Firefox()
+
+		#Patrick checks the new website and tehre is no sign of my old list
+		self.browser.get(self.live_server_url)
+		page_text = self.browser.find_element_by_tag_name('body').text
+		self.assertNotIn('Buy something', page_text)
+		self.assertNotIn('buy another item', page_text)
+
+		#Patrick enters a new item to the list
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox.send_keys('Buy milk')
+		inputbox.send_keys(Keys.ENTER)
+
+		#Patrick gets his own unique ID
+		patrick_list_url = self.browser.current_url
+		self.assertRegex(patrick_list_url, 'lists/.+')
+		self.assertNotEqual(patrick_list_url, my_list_url)
+
+		#Again not trace of my list left
+		page_text = self.browser.find_element_by_tag_name('body').text
+		self.assertNotIn('Buy something', page_text)
+		self.assertIn('Buy milk', page_text)
